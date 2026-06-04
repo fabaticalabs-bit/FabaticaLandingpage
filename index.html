@@ -188,6 +188,22 @@ section{position:relative;z-index:1;padding:100px 5vw}
 .cf-btn{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;padding:15px 40px;background:var(--orange);color:#fff;border:none;cursor:pointer;transition:background .2s,transform .15s;align-self:flex-start;margin-top:4px}
 .cf-btn:hover{background:var(--orange-lt);transform:translateY(-1px)}
 
+/* ── FILE UPLOAD ── */
+.cf-upload-zone{position:relative;border:1px dashed rgba(255,255,255,0.18);background:var(--surf);padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .25s,background .25s}
+.cf-upload-zone:hover,.cf-upload-zone.drag-over{border-color:var(--orange);background:rgba(232,98,26,0.05)}
+.cf-upload-zone.has-file{border-color:rgba(61,184,122,0.5);border-style:solid;background:rgba(61,184,122,0.04)}
+.cf-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.cf-upload-icon{width:36px;height:36px;margin:0 auto 10px;stroke:var(--muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+.cf-upload-zone:hover .cf-upload-icon,.cf-upload-zone.drag-over .cf-upload-icon{stroke:var(--orange)}
+.cf-upload-zone.has-file .cf-upload-icon{stroke:#3DB87A}
+.cf-upload-title{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin-bottom:4px}
+.cf-upload-hint{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;line-height:1.6}
+.cf-upload-hint span{color:var(--orange)}
+.cf-upload-status{margin-top:10px;font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.1em;color:#3DB87A;text-transform:uppercase;display:none}
+.cf-upload-zone.has-file .cf-upload-status{display:block}
+.cf-upload-clear{display:inline-block;margin-top:6px;font-size:10px;color:var(--muted);cursor:pointer;text-decoration:underline;font-family:"Share Tech Mono",monospace;letter-spacing:.08em;background:none;border:none;transition:color .2s}
+.cf-upload-clear:hover{color:var(--orange)}
+
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid var(--border);padding:32px 5vw}
 .footer-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border)}
@@ -565,7 +581,22 @@ footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid v
         <div><label class="cf-label">Project Details</label>
           <textarea class="cf-ta" placeholder="Describe your part, quantity, material preferences, deadline..."></textarea>
         </div>
-        <button type="submit" class="cf-btn" id="cfbtn">Send Enquiry →</button>
+        <div>
+          <label class="cf-label">Upload File <span style="color:var(--faint);font-size:9px;letter-spacing:.08em">(Optional — .STL .STEP .3MF .ZIP)</span></label>
+          <div class="cf-upload-zone" id="uploadZone">
+            <input class="cf-upload-input" type="file" id="fileInput" accept=".stl,.step,.stp,.3mf,.zip" onchange="handleFile(this)">
+            <svg class="cf-upload-icon" viewBox="0 0 36 36">
+              <path d="M6,24 L6,30 L30,30 L30,24"/>
+              <polyline points="12,14 18,8 24,14"/>
+              <line x1="18" y1="8" x2="18" y2="24"/>
+            </svg>
+            <div class="cf-upload-title" id="uploadTitle">Drop your file here or click to browse</div>
+            <div class="cf-upload-hint">Accepted formats: <span>.STL</span> &middot; <span>.STEP</span> &middot; <span>.3MF</span> &middot; <span>.ZIP</span><br>Max file size: 50 MB</div>
+            <div class="cf-upload-status" id="uploadStatus"></div>
+            <button type="button" class="cf-upload-clear" id="uploadClear" onclick="clearFile(event)" style="display:none">&#10005; Remove file</button>
+          </div>
+        </div>
+        <button type="submit" class="cf-btn" id="cfbtn">Send Enquiry &rarr;</button>
       </form>
     </div>
   </div>
@@ -597,12 +628,92 @@ footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid v
 </footer>
 
 <script>
+// Scroll reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add("on"),60) });
 },{threshold:0.1});
 document.querySelectorAll(".rv").forEach(el => obs.observe(el));
 document.querySelectorAll(".fpoint.rv").forEach((el,i) => { el.style.transitionDelay = i*0.1+"s"; });
 
+// ── File upload ──
+const zone = document.getElementById("uploadZone");
+const fileInput = document.getElementById("fileInput");
+const uploadTitle = document.getElementById("uploadTitle");
+const uploadStatus = document.getElementById("uploadStatus");
+const uploadClear = document.getElementById("uploadClear");
+
+const ALLOWED = [".stl",".step",".stp",".3mf",".zip"];
+const MAX_MB = 50;
+
+function formatBytes(bytes){
+  if(bytes < 1024*1024) return (bytes/1024).toFixed(1)+" KB";
+  return (bytes/(1024*1024)).toFixed(1)+" MB";
+}
+
+function isAllowed(name){
+  const ext = "."+name.split(".").pop().toLowerCase();
+  return ALLOWED.includes(ext);
+}
+
+function setFileState(file){
+  if(!isAllowed(file.name)){
+    showError("File type not accepted. Please use .STL, .STEP, .3MF, or .ZIP");
+    clearFile();
+    return;
+  }
+  if(file.size > MAX_MB * 1024 * 1024){
+    showError("File exceeds 50 MB limit.");
+    clearFile();
+    return;
+  }
+  zone.classList.add("has-file");
+  uploadTitle.textContent = file.name;
+  uploadStatus.textContent = formatBytes(file.size) + " — ready to send";
+  uploadClear.style.display = "inline-block";
+}
+
+function showError(msg){
+  zone.classList.remove("has-file");
+  uploadStatus.style.color = "#E84A4A";
+  uploadStatus.style.display = "block";
+  uploadStatus.textContent = msg;
+  uploadClear.style.display = "none";
+  uploadTitle.textContent = "Drop your file here or click to browse";
+  setTimeout(()=>{
+    uploadStatus.style.display = "none";
+    uploadStatus.style.color = "#3DB87A";
+  }, 3500);
+}
+
+function handleFile(input){
+  if(input.files && input.files[0]) setFileState(input.files[0]);
+}
+
+function clearFile(e){
+  if(e) e.stopPropagation();
+  fileInput.value = "";
+  zone.classList.remove("has-file");
+  uploadTitle.textContent = "Drop your file here or click to browse";
+  uploadStatus.textContent = "";
+  uploadStatus.style.display = "none";
+  uploadClear.style.display = "none";
+}
+
+// Drag and drop
+zone.addEventListener("dragover", e => { e.preventDefault(); zone.classList.add("drag-over"); });
+zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+zone.addEventListener("drop", e => {
+  e.preventDefault();
+  zone.classList.remove("drag-over");
+  const file = e.dataTransfer.files[0];
+  if(file){
+    // Sync to the real input if possible
+    try { const dt = new DataTransfer(); dt.items.add(file); fileInput.files = dt.files; } catch(err){}
+    setFileState(file);
+  }
+});
+
+// Form submit
 function handleForm(e){
   e.preventDefault();
   const btn = document.getElementById("cfbtn");
