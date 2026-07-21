@@ -39,6 +39,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;ali
 .nav-links a:hover{color:var(--text)}
 .nav-cta{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:8px 22px;background:var(--orange);color:#fff;border:none;cursor:pointer;transition:background .2s}
 .nav-cta:hover{background:var(--orange-lt)}
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:13px 20px 13px 16px;border-radius:50px;box-shadow:0 4px 20px rgba(37,211,102,0.35);text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s}
+.wa-float:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,0.45)}
+.wa-float svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
+.wa-float-label{display:block}
+.wa-pulse{position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:#ff4444;border-radius:50%;border:2px solid var(--black)}
+.wa-pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:#ff4444;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:1}70%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}
+/* WhatsApp CTA row in contact info */
+.cinfo-wa{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(37,211,102,0.06);border-top:1px solid rgba(37,211,102,0.15)}
+.cinfo-wa svg{width:18px;height:18px;fill:#25D366;flex-shrink:0}
+.cinfo-wa a{color:#25D366;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;transition:opacity .2s}
+.cinfo-wa a:hover{opacity:.75}
+.cinfo-wa-sub{font-size:11px;font-family:"Share Tech Mono",monospace;color:var(--muted);letter-spacing:.08em;margin-top:2px}
 
 /* ── HERO ── */
 .hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
@@ -261,7 +274,10 @@ footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid v
     <li><a href="#facility">Facility</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Get a Quote</a>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="https://wa.me/919164462780?text=Hi+Fabatica+Labs!+I%27d+like+to+discuss+a+manufacturing+project.+Please+let+me+know+how+to+proceed." target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;background:#25D366;color:#fff;transition:background .2s;border-radius:0" onmouseover="this.style.background='#1ebe5d'" onmouseout="this.style.background='#25D366'"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+    <a href="#contact" class="nav-cta">Get a Quote</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -554,21 +570,28 @@ footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid v
           <div class="cinfo-label">Hours</div>
           <div class="cinfo-val">Mon – Sat · 9:00 AM – 7:00 PM IST</div>
         </div>
+        <div class="cinfo-wa">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <div>
+            <a href="https://wa.me/919164462780?text=Hi+Fabatica+Labs!+I%27d+like+to+discuss+a+manufacturing+project.+Please+let+me+know+how+to+proceed." target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <div class="cinfo-wa-sub">Instant reply · +91-91644 62780</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="rv">
-      <form class="cform" onsubmit="handleForm(event)">
+      <form class="cform" id="contactForm">
         <div class="crow">
-          <div><label class="cf-label">Name</label><input class="cf-input" type="text" placeholder="Your name" required></div>
-          <div><label class="cf-label">Company</label><input class="cf-input" type="text" placeholder="Company (optional)"></div>
+          <div><label class="cf-label">Name</label><input class="cf-input" type="text" name="name" placeholder="Your name" required></div>
+          <div><label class="cf-label">Company</label><input class="cf-input" type="text" name="company" placeholder="Company (optional)"></div>
         </div>
         <div class="crow">
-          <div><label class="cf-label">Email</label><input class="cf-input" type="email" placeholder="you@example.com" required></div>
-          <div><label class="cf-label">Phone</label><input class="cf-input" type="tel" placeholder="+91 98XXX XXXXX"></div>
+          <div><label class="cf-label">Email</label><input class="cf-input" type="email" name="email" placeholder="you@example.com" required></div>
+          <div><label class="cf-label">Phone</label><input class="cf-input" type="tel" name="phone" placeholder="+91 98XXX XXXXX"></div>
         </div>
         <div><label class="cf-label">Service Required</label>
-          <select class="cf-select">
+          <select class="cf-select" name="service">
             <option value="">Select a process...</option>
             <option>FDM 3D Printing</option>
             <option>Resin 3D Printing</option>
@@ -579,24 +602,26 @@ footer{position:relative;z-index:1;background:var(--surf);border-top:1px solid v
           </select>
         </div>
         <div><label class="cf-label">Project Details</label>
-          <textarea class="cf-ta" placeholder="Describe your part, quantity, material preferences, deadline..."></textarea>
+          <textarea class="cf-ta" name="message" placeholder="Describe your part, quantity, material preferences, deadline..."></textarea>
         </div>
         <div>
-          <label class="cf-label">Upload File <span style="color:var(--faint);font-size:9px;letter-spacing:.08em">(Optional — .STL .STEP .3MF .ZIP)</span></label>
+          <label class="cf-label">Upload File <span style="color:var(--faint);font-size:9px;letter-spacing:.08em">(Optional — .STL .STEP .3MF .ZIP, max 100&nbsp;MB)</span></label>
           <div class="cf-upload-zone" id="uploadZone">
-            <input class="cf-upload-input" type="file" id="fileInput" accept=".stl,.step,.stp,.3mf,.zip" onchange="handleFile(this)">
+            <input class="cf-upload-input" type="file" id="fileInput" accept=".stl,.step,.stp,.3mf,.zip" name="file" onchange="handleFile(this)">
             <svg class="cf-upload-icon" viewBox="0 0 36 36">
               <path d="M6,24 L6,30 L30,30 L30,24"/>
               <polyline points="12,14 18,8 24,14"/>
               <line x1="18" y1="8" x2="18" y2="24"/>
             </svg>
             <div class="cf-upload-title" id="uploadTitle">Drop your file here or click to browse</div>
-            <div class="cf-upload-hint">Accepted formats: <span>.STL</span> &middot; <span>.STEP</span> &middot; <span>.3MF</span> &middot; <span>.ZIP</span><br>Max file size: 50 MB</div>
+            <div class="cf-upload-hint">Accepted formats: <span>.STL</span> &middot; <span>.STEP</span> &middot; <span>.3MF</span> &middot; <span>.ZIP</span><br>File uploaded &amp; link emailed + sent via WhatsApp</div>
             <div class="cf-upload-status" id="uploadStatus"></div>
             <button type="button" class="cf-upload-clear" id="uploadClear" onclick="clearFile(event)" style="display:none">&#10005; Remove file</button>
           </div>
         </div>
-        <button type="submit" class="cf-btn" id="cfbtn">Send Enquiry &rarr;</button>
+        <button type="submit" class="cf-btn" id="cfbtn">Send Enquiry &#8594;</button>
+        <p id="form-success" style="display:none;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:#3DB87A;text-transform:uppercase;margin-top:12px;">&#10003; Message sent &#8212; we'll be in touch shortly!</p>
+        <p id="form-error" style="display:none;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:#E84A4A;text-transform:uppercase;margin-top:12px;">&#10007; Something went wrong &#8212; please email contact@fabatica.com directly.</p>
       </form>
     </div>
   </div>
@@ -713,14 +738,136 @@ zone.addEventListener("drop", e => {
   }
 });
 
-// Form submit
-function handleForm(e){
+// Form submit — file.io upload → link in email + WhatsApp
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
   e.preventDefault();
   const btn = document.getElementById("cfbtn");
-  btn.textContent = "Sent! We'll be in touch shortly.";
-  btn.style.background = "#3DB87A";
-  btn.disabled = true;
-}
+  const ok  = document.getElementById("form-success");
+  const err = document.getElementById("form-error");
+  ok.style.display  = "none";
+  err.style.display = "none";
+  btn.textContent   = "Sending…";
+  btn.disabled      = true;
+
+  const form   = e.target;
+  const fileEl = document.getElementById("fileInput");
+  const file   = (fileEl && fileEl.files && fileEl.files[0]) ? fileEl.files[0] : null;
+
+  let fileLink = null;
+
+  // ── Step 1: If file selected, upload to file.io to get a shareable link ──
+  if (file) {
+    btn.textContent = "Uploading file…";
+    try {
+      const fio = new FormData();
+      fio.append("file", file);
+      // file.io free: 1 download, expires 14 days, max 100MB
+      const fioRes  = await fetch("https://file.io/?expires=14d", {
+        method: "POST",
+        body: fio
+      });
+      const fioData = await fioRes.json();
+      if (fioData.success && fioData.link) {
+        fileLink = fioData.link;
+      }
+    } catch(ex) {
+      console.warn("file.io upload failed, continuing without link:", ex);
+    }
+  }
+
+  // ── Step 2: Build the file info string ──
+  let fileInfo = "No file attached";
+  if (file && fileLink) {
+    fileInfo = file.name + " (" + formatBytes(file.size) + ") — Download: " + fileLink;
+  } else if (file && !fileLink) {
+    fileInfo = file.name + " (" + formatBytes(file.size) + ") — upload failed, customer will send via WhatsApp";
+  }
+
+  // ── Step 3: Send form data + file link to Web3Forms (JSON) ──
+  btn.textContent = "Sending…";
+  const payload = {
+    access_key:    "bd766b0f-1b77-494f-87fb-e35ecc250f6a",
+    subject:       "New Quote Request — Fabatica Labs",
+    from_name:     "Fabatica Labs Website",
+    name:          form.querySelector('[name="name"]').value,
+    email:         form.querySelector('[name="email"]').value,
+    company:       form.querySelector('[name="company"]').value    || "—",
+    phone:         form.querySelector('[name="phone"]').value      || "—",
+    service:       form.querySelector('[name="service"]').value    || "—",
+    message:       form.querySelector('[name="message"]').value    || "—",
+    file_attached: fileInfo
+  };
+
+  try {
+    const res  = await fetch("https://api.web3forms.com/submit", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body:    JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.success) {
+      btn.textContent      = "Sent ✔";
+      btn.style.background = "#3DB87A";
+
+      // ── Step 4: Build WhatsApp message with file link ──
+      const name    = payload.name;
+      const service = payload.service;
+      const msg     = payload.message;
+      let waMsg = "Hi Fabatica Labs! I just submitted a quote request.\n\n" +
+                  "Name: " + name + "\n" +
+                  "Service: " + service + "\n" +
+                  "Message: " + msg;
+      if (fileLink) {
+        waMsg += "\n\nFile: " + (file ? file.name : "") + "\nDownload link: " + fileLink;
+      } else if (file) {
+        waMsg += "\n\nI have a file to share: " + file.name + " (" + formatBytes(file.size) + "). Sending it here.";
+      }
+      const waUrl = "https://wa.me/919164462780?text=" + encodeURIComponent(waMsg);
+
+      // Show success message with WhatsApp CTA
+      if (file) {
+        ok.innerHTML =
+          "✓ Quote request sent to Fabatica Labs!<br>" +
+          "<span style=\"font-size:11px;opacity:.8\">Tap below to also send via WhatsApp" +
+          (fileLink ? " (your file link is included)" : " and attach your file") + ":</span><br><br>" +
+          "<a href=\"" + waUrl + "\" target=\"_blank\" " +
+          "style=\"display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;" +
+          "padding:10px 20px;font-family:Barlow Condensed,sans-serif;font-weight:700;" +
+          "font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;\">" +
+          "<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"#fff\">" +
+          "<path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z\"/></svg>" +
+          "Open WhatsApp</a>";
+      } else {
+        ok.innerHTML = "✓ Message sent — we'll be in touch shortly!";
+      }
+      ok.style.display = "block";
+      form.reset();
+      clearFile();
+
+      // ── Step 5: Auto-open WhatsApp immediately ──
+      window.open(waUrl, "_blank");
+
+    } else {
+      console.error("Web3Forms error:", data.message || "Unknown", data);
+      throw new Error(data.message || "Submission failed");
+    }
+  } catch(ex) {
+    console.error("Submit failed:", ex);
+    btn.textContent      = "Send Enquiry →";
+    btn.style.background = "var(--orange)";
+    btn.disabled         = false;
+    err.style.display    = "block";
+  }
+});
 </script>
+
+<!-- WhatsApp Floating Button -->
+<a class="wa-float" href="https://wa.me/919164462780?text=Hi+Fabatica+Labs!+I%27d+like+to+discuss+a+manufacturing+project.+Please+let+me+know+how+to+proceed." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-float-label">Chat on WhatsApp</span>
+  <span class="wa-pulse"></span>
+</a>
+
 </body>
 </html>
